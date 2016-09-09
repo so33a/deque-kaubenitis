@@ -16,20 +16,29 @@ link novoNo(int item, link next) {
 
 FILA novaFila() {
   FILA f = malloc(sizeof *f);
-  f->maisNovo = f->maisAntigo = NULL;
+  f->fim = f->ini = NULL;
   return f;
 }
 
-void inserir(FILA f, int e) {
-  if(f->maisAntigo == NULL) {
-    f->maisAntigo = f->maisNovo = novoNo(e, NULL);
+void inserirFim(FILA f, int e) {
+  if(f->ini == NULL) {
+    f->ini = f->fim = novoNo(e, NULL);
   } else {
-    f->maisNovo->next = novoNo(e, NULL);
-    f->maisNovo = f->maisNovo->next;
+    f->fim->next = novoNo(e, NULL);
+    f->fim = f->fim->next;
   }
 }
 
-int remover(FILA f){
+void inserirInicio(FILA f, int e){
+  if(f->ini == NULL) {
+    f->ini = f->fim = novoNo(e, NULL);
+  } else {
+    f->ini = novoNo(e, NULL);
+    f->ini = f->ini->next;
+  }
+}
+
+int removerInicio(FILA f){
   int x;
   link t;
   if(filaVazia(f)){
@@ -37,22 +46,41 @@ int remover(FILA f){
     return 0;
   }
   
-  x = f->maisAntigo->item;
-  t = f->maisAntigo;
-  f->maisAntigo = f->maisAntigo->next;
+  x = f->ini->item;
+  t = f->ini;
+  f->ini = f->ini->next;
  
-  if(f->maisAntigo == NULL)
-    f->maisNovo = NULL;
+  if(f->ini == NULL)
+    f->fim = NULL;
 
   free(t);
   return x;
 }
+int removerFim(FILA f){
+  int x;
+  link t;
+  if(filaVazia(f)){
+    printf ("Erro, a fila esta vazia\n");
+    return 0;
+  }
+  x = f->fim->item;
+  t = f->fim;
+ // f->ini = f->ini->next;
+ 
+  if(f->ini == NULL)
+    f->fim = NULL;
+
+  free(t);
+  return x;
+}
+
+
 int filaVazia(FILA f) {
-  return ((f->maisNovo == NULL) || (f->maisAntigo == NULL));
+  return ((f->fim == NULL) || (f->ini == NULL));
 }
 void imprimirFila(FILA f) {
   link t;
-  for(t = f->maisAntigo; t != NULL; t = t->next) 
+  for(t = f->ini; t != NULL; t = t->next) 
     printf ("%d ", t->item);
   printf ("\n");
 }
