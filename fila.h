@@ -8,14 +8,16 @@ struct node {
 };
 
 typedef struct {
-  link maisAntigo;
-  link maisNovo;
+  link ini;
+  link fim;
 } * FILA;
 
 link novoNo(int item, link next);
 FILA novaFila();
-void inserir(FILA f, int e);
-int remover(FILA f);
+void inserirFim(FILA f, int e);
+link inserirInicio(FILA f, int e);
+int removerInicio(FILA f);
+int removerFim(FILA f);
 void imprimirFila(FILA f);
 void destroiFila(FILA f);
 int filaVazia(FILA f); 
